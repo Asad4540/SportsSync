@@ -1,48 +1,76 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import './Navbar.css';
 
 function Navbar() {
+    const location = useLocation();
+
+    const logout = () => {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        window.location.href = '/login';
+    }
+
     return (
-        <>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-4">
-                <a class="navbar-brand" href="#">User Management CRUD</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <Link class="nav-link" to='/'>Home </Link>
-                        </li>
-                        <li class="nav-item">
-                            <Link class="nav-link" to="/adduser">Add User</Link>
-                        </li>
-                    </ul>
+        <div className="dashboard-layout">
+            <nav className="top-navbar">
+                <Link className="brand-title" to="/">
+                    <div className="brand-logo">UC</div>
+                    User Management CRUD
+                </Link>
+                <div className="navbar-actions">
+                    <Link className="nav-link-btn" to="/">Dashboard</Link>
+                    <Link className="nav-link-btn primary" to="/adduser">+ Add New User</Link>
                 </div>
             </nav>
 
-            <div className="d-flex">
-
-                <div className="bg-primary text-white" style={{ width: '15%', height: '100vh' }}>
-                    <ul>
-                        <li >
-                            Option 1
+            <div className="main-container">
+                <aside className="sidebar">
+                    <ul className="sidebar-menu">
+                        <li>
+                            <Link
+                                to="/"
+                                className={`sidebar-item ${location.pathname === '/' ? 'active' : ''}`}
+                            >
+                                <span className="sidebar-item-icon">📊</span>
+                                Dashboard
+                            </Link>
                         </li>
                         <li>
-                            Option 2
+                            <Link
+                                to="/adduser"
+                                className={`sidebar-item ${location.pathname === '/adduser' ? 'active' : ''}`}
+                            >
+                                <span className="sidebar-item-icon">👤</span>
+                                User Directory
+                            </Link>
+                        </li>
+                        <li>
+                            <div className="sidebar-item">
+                                <span className="sidebar-item-icon">⚙️</span>
+                                Settings
+                            </div>
+                        </li>
+                        <li>
+                            <div className="sidebar-item">
+                                <span className="sidebar-item-icon">🛡️</span>
+                                Security
+                            </div>
+                        </li>
+                        <li>
+                            <div className="sidebar-item" onClick={logout}>
+                                <span className="sidebar-item-icon" >❌</span>
+                                Logout
+                            </div>
                         </li>
                     </ul>
-                </div>
+                </aside>
 
-                <div className="p-2">
-                     <Outlet /> 
-                </div>
-
-
+                <main className="content-panel">
+                    <Outlet />
+                </main>
             </div>
-
-
-        </>
+        </div>
     )
 }
 
