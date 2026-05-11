@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const authMiddleware = require('../middleware/authMiddleware');
+const adminMiddleware = require('../middleware/adminMiddleware');
 
-// POST /api/auth/register
+// Public routes
 router.post('/register', authController.register);
-
-// POST /api/auth/login
 router.post('/login', authController.login);
+
+// Protected routes (require authentication)
+router.get('/profile', authMiddleware, authController.getProfile);
+router.put('/profile', authMiddleware, authController.updateProfile);
+
+// Admin routes
+router.get('/users', authMiddleware, adminMiddleware, authController.getAllUsers);
 
 module.exports = router;
