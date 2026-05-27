@@ -1,0 +1,17 @@
+ssh root@31.97.42.89
+C8?rd-M?2&Jk4uw#84'Y
+ 
+SSH Path
+cd /var/www/RFP_MERN
+cd /var/www/vm360-staging
+ 
+Nginx File path 
+cat /etc/nginx/sites-enabled/*
+ 
+Nginx Restart
+sudo nginx -t
+sudo systemctl restart nginx
+ 
+update .env
+pm2 restart rfp-backend --update-env
+pm2 restart vm360-staging --update-env
